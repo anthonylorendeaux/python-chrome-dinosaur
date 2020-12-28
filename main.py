@@ -4,6 +4,7 @@ import os
 from Dinosaur import Dinosaur
 
 pygame.init()
+pygame.display.set_caption("Chrome Dinosaur") 
 
 # Constants
 SCREEN_HEIGHT = 600
