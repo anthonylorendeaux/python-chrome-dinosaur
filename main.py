@@ -3,6 +3,7 @@ import os
 import random
 
 from Dinosaur import Dinosaur
+from Cloud import Cloud
 
 pygame.init()
 pygame.display.set_caption("Chrome Dinosaur") 
@@ -23,39 +24,34 @@ LARGE_CACTUS = [pygame.image.load(os.path.join("Assets/Cactus", "LargeCactus1.pn
 BIRD = [pygame.image.load(os.path.join("Assets/Bird", "Bird1.png")),
         pygame.image.load(os.path.join("Assets/Bird", "Bird2.png"))]
 
-CLOUD = pygame.image.load(os.path.join("Assets/Other", "Cloud.png"))
-
 BG = pygame.image.load(os.path.join("Assets/Other", "Track.png"))
-
-# TODO - To Remove
-class Cloud:
-    def __init__(self):
-        self.x = SCREEN_WIDTH + random.randint(800, 1000)
-        self.y = random.randint(50, 100)
-        self.image = CLOUD
-        self.width = self.image.get_width()
-
-    def update(self):
-        self.x -= game_speed
-        if self.x < -self.width:
-            self.x = SCREEN_WIDTH + random.randint(2500, 3000)
-            self.y = random.randint(50, 100)
-
-    def draw(self, SCREEN):
-        SCREEN.blit(self.image, (self.x, self.y))
 
 # * Main function
 def main():
-    global game_speed, x_pos_bg, y_pos_bg
+    global game_speed, x_pos_bg, y_pos_bg, points
     run = True
     clock = pygame.time.Clock()
     game_speed = 14
     x_pos_bg = 0
     y_pos_bg = 380
+    points = 0
+    font = pygame.font.Font('freesansbold.ttf', 20)
 
     # Instanciate Class
-    cloud = Cloud()
+    cloud = Cloud(SCREEN_WIDTH)
     player = Dinosaur()
+
+    # Score
+    def score():
+        global points, game_speed
+        points += 1
+        if points % 100 == 0:
+            game_speed += 1
+
+        text = font.render("Points: " + str(points), True, (0, 0, 0))
+        textRect = text.get_rect()
+        textRect.center = (1000, 40)
+        SCREEN.blit(text, textRect)
 
     # Background
     def background():
@@ -83,7 +79,9 @@ def main():
         background()
 
         cloud.draw(SCREEN)
-        cloud.update()
+        cloud.update(SCREEN_WIDTH, game_speed)
+
+        score()
 
         clock.tick(30)
         pygame.display.update()
