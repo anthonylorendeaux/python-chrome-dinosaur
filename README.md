@@ -5,7 +5,7 @@ A recreated version of the Dino game in python.
 
 ## Installation
 
-Make sure you have Python installed alongwith [pygame](http://www.pygame.org/) library
+Make sure you have Python installed alongside with [pygame](http://www.pygame.org/) library
 
 ## Usage
 
