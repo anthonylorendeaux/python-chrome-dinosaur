@@ -32,12 +32,16 @@ def main():
     run = True
     clock = pygame.time.Clock()
     game_speed = 14
+
+    # BG Constants
     x_pos_bg = 0
     y_pos_bg = 380
+
+    # Score and Font
     points = 0
     font = pygame.font.Font('freesansbold.ttf', 20)
 
-    # Instanciate Class
+    # Instanciate Classes
     cloud = Cloud(SCREEN_WIDTH)
     player = Dinosaur()
 
@@ -73,14 +77,18 @@ def main():
         SCREEN.fill((255, 255, 255))
         userInput = pygame.key.get_pressed()
 
+        # Draw and Update the Dino
         player.draw(SCREEN)
         player.update(userInput)
 
+        # Background
         background()
 
+        # Draw and Update Cloud
         cloud.draw(SCREEN)
         cloud.update(SCREEN_WIDTH, game_speed)
 
+        # Score display
         score()
 
         clock.tick(30)
