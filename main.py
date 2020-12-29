@@ -17,8 +17,7 @@ SCREEN_WIDTH = 1100
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Images Loading
-RUNNING = [pygame.image.load(os.path.join("Assets/Dino", "DinoRun1.png")),
-           pygame.image.load(os.path.join("Assets/Dino", "DinoRun2.png"))]
+DINO = pygame.image.load(os.path.join("Assets/Dino", "DinoRun1.png"))
 
 SMALL_CACTUS = [pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus1.png")),
                 pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus2.png")),
@@ -78,6 +77,7 @@ def main():
 
     # Game Loop
     while run:
+        # Quit event
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -121,15 +121,20 @@ def main():
         clock.tick(30)
         pygame.display.update()
 
+# Menu function
 def menu(death_count):
     global points
     run = True
+
+    # Menu loop
     while run:
         SCREEN.fill((255, 255, 255))
         font = pygame.font.Font('freesansbold.ttf', 30)
 
+        # First Screen
         if death_count == 0:
             text = font.render("Press any Key to Start", True, (0, 0, 0))
+        # Second Screen
         elif death_count > 0:
             text = font.render("Press any Key to Restart", True, (0, 0, 0))
             score = font.render("Your Score: " + str(points), True, (0, 0, 0))
@@ -139,8 +144,10 @@ def menu(death_count):
         textRect = text.get_rect()
         textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
         SCREEN.blit(text, textRect)
-        SCREEN.blit(RUNNING[0], (SCREEN_WIDTH // 2 - 20, SCREEN_HEIGHT // 2 - 140))
+        SCREEN.blit(DINO, (SCREEN_WIDTH // 2 - 20, SCREEN_HEIGHT // 2 - 140))
         pygame.display.update()
+
+        # Quit Event
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -148,5 +155,5 @@ def menu(death_count):
             if event.type == pygame.KEYDOWN:
                 main()
 
-
+# Launch the game
 menu(death_count=0)
