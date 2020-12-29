@@ -17,6 +17,8 @@ SCREEN_WIDTH = 1100
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # Images Loading
+DINO = pygame.image.load(os.path.join("Assets/Dino", "DinoRun1.png"))
+
 SMALL_CACTUS = [pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus1.png")),
                 pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus2.png")),
                 pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus3.png"))]
@@ -48,6 +50,7 @@ def main():
     cloud = Cloud(SCREEN_WIDTH)
     player = Dinosaur()
     obstacles = []
+    death_count = 0
 
     # Score
     def score():
@@ -74,6 +77,7 @@ def main():
 
     # Game Loop
     while run:
+        # Quit event
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -100,7 +104,9 @@ def main():
             obstacle.update(game_speed, obstacles) 
             # Check Collisions 
             if player.dino_rect.colliderect(obstacle.rect):
-                pygame.draw.rect(SCREEN, (255, 0, 0), player.dino_rect, 2)
+                pygame.time.delay(500)
+                death_count += 1
+                menu(death_count)
 
         # Background
         background()
@@ -114,4 +120,40 @@ def main():
 
         clock.tick(30)
         pygame.display.update()
-main()
+
+# Menu function
+def menu(death_count):
+    global points
+    run = True
+
+    # Menu loop
+    while run:
+        SCREEN.fill((255, 255, 255))
+        font = pygame.font.Font('freesansbold.ttf', 30)
+
+        # First Screen
+        if death_count == 0:
+            text = font.render("Press any Key to Start", True, (0, 0, 0))
+        # Second Screen
+        elif death_count > 0:
+            text = font.render("Press any Key to Restart", True, (0, 0, 0))
+            score = font.render("Your Score: " + str(points), True, (0, 0, 0))
+            scoreRect = score.get_rect()
+            scoreRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 50)
+            SCREEN.blit(score, scoreRect)
+        textRect = text.get_rect()
+        textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+        SCREEN.blit(text, textRect)
+        SCREEN.blit(DINO, (SCREEN_WIDTH // 2 - 20, SCREEN_HEIGHT // 2 - 140))
+        pygame.display.update()
+
+        # Quit Event
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+                pygame.quit()
+            if event.type == pygame.KEYDOWN:
+                main()
+
+# Launch the game
+menu(death_count=0)
