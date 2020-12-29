@@ -13,6 +13,8 @@ class Dinosaur:
     # Attributes
     X_POS = 80
     Y_POS = 310
+    Y_POS_DUCK = 340
+    JUMP_VEL = 8.5
 
     # Constructor
     def __init__(self):
@@ -25,6 +27,7 @@ class Dinosaur:
         self.dino_jump = False
 
         self.step_index = 0
+        self.jump_vel = self.JUMP_VEL
         self.image = self.run_img[0]
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.X_POS
@@ -55,9 +58,13 @@ class Dinosaur:
             self.dino_run = True
             self.dino_jump = False
 
-    # TODO - To Implements
+    # Duck function
     def duck(self):
-        pass
+        self.image = self.duck_img[self.step_index // 5]
+        self.dino_rect = self.image.get_rect()
+        self.dino_rect.x = self.X_POS
+        self.dino_rect.y = self.Y_POS_DUCK
+        self.step_index += 1
     
     # Run function
     def run(self):
@@ -67,6 +74,12 @@ class Dinosaur:
         self.dino_rect.y = self.Y_POS
         self.step_index += 1
 
-    # TODO - To Implements
+    # Jump function
     def jump(self):
-        pass
+        self.image = self.jump_img
+        if self.dino_jump:
+            self.dino_rect.y -= self.jump_vel * 4
+            self.jump_vel -= 0.8
+        if self.jump_vel < - self.JUMP_VEL:
+            self.dino_jump = False
+            self.jump_vel = self.JUMP_VEL
