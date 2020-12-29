@@ -16,7 +16,7 @@ SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 1100
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-#TODO - To Remove
+# Images Loading
 SMALL_CACTUS = [pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus1.png")),
                 pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus2.png")),
                 pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus3.png"))]
@@ -85,7 +85,7 @@ def main():
         player.draw(SCREEN)
         player.update(userInput)
 
-        # Obstacles
+        # Create Random Obstacles
         if len(obstacles) == 0:
             if random.randint(0, 2) == 0:
                 obstacles.append(SmallCactus(SMALL_CACTUS, SCREEN_WIDTH))
@@ -94,9 +94,11 @@ def main():
             elif random.randint(0, 2) == 2:
                 obstacles.append(Bird(BIRD, SCREEN_WIDTH))
         
+        # Draw Obstacles
         for obstacle in obstacles:
             obstacle.draw(SCREEN)
             obstacle.update(game_speed, obstacles) 
+            # Check Collisions 
             if player.dino_rect.colliderect(obstacle.rect):
                 pygame.draw.rect(SCREEN, (255, 0, 0), player.dino_rect, 2)
 
